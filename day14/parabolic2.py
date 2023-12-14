@@ -31,19 +31,29 @@ def weight(lines):
     return total
 
 cache = []
-for i in range(100000):
-    cache.append(lines)
-    lines = roll_and_spin(lines)
-    lines = roll_and_spin(lines)
-    lines = roll_and_spin(lines)
-    lines = roll_and_spin(lines)
 
+while not lines in cache:
     print()
-    print(f"After {i} cylces, weight = {weight(lines)}")
+    print(f"After {len(cache)} cycles, weight = {weight(lines)}:")
     for line in lines:
         print(line)
 
-    if lines in cache:
-        idx = cache.index(lines)
-        print(f"Pattern after {i} cycles same as after {idx} cycles")
-        break
+    cache.append(lines)
+
+    lines = roll_and_spin(lines)
+    lines = roll_and_spin(lines)
+    lines = roll_and_spin(lines)
+    lines = roll_and_spin(lines)
+
+idx = cache.index(lines)
+
+print()
+print(f"Pattern after {len(cache)} cycles same as after {idx} cycles")
+
+period = len(cache) - idx
+max_cycles = 1000000000
+
+for j in range(idx, len(cache)):
+    if (j % period) == (max_cycles % period):
+        print(f"Using weight from cycle {j}")
+        print(f"Weight after {max_cycles} cycles:", weight(cache[j]))
